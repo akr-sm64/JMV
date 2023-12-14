@@ -1,13 +1,16 @@
 package core;
 
-import org.lwjgl.Version;
-import imgui.ImGui;
+import io.Window;
+
+/**
+ * The Main class will only contain the main method
+ * @author akr_sm64
+ */
 
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println("Hello LWJGL: " + Version.getVersion());
-		System.out.println("Hello ImGui: " + ImGui.getVersion());
+		new Window().run();
 	}
 
 }
