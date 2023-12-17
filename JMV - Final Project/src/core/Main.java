@@ -1,7 +1,7 @@
 package core;
 
 /**
- * The Main class will only contain the main method
+ * The Main class will only contain the main method.
  * @author akr_sm64
  */
 
