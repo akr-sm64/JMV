@@ -5,6 +5,7 @@ import org.lwjgl.opengl.*;
 
 import org.lwjgl.Version;
 
+import core.graphics.Graphics;
 import core.input.*;
 
 import imgui.ImGui;
@@ -15,12 +16,13 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
- * The Window class will do everything the window needs to load properly
+ * The Window class will do everything the window needs to load properly.
  * @author akr_sm64
  */
 
 public class Window {
 	private long glfwWindow;
+	private Graphics gfx;
 	
 	private int width;
 	private int height;
@@ -37,6 +39,7 @@ public class Window {
 		this.width = 800;
 		this.height = 600;
 		this.title = "JMV - Java Model Viewer";
+		this.gfx = new Graphics();
 	}
 	
 	/**
@@ -54,7 +57,9 @@ public class Window {
 	
 	/**
 	 * The run method will take care of creating the window using GLFW. <br>
-	 * It will have the main loop which will do all the rendering */
+	 * It will have the main loop which will do all the rendering. <br>
+	 * And finally clean everything up when the program is closed.
+	 */
 	
 	public void run() {
 		System.out.println("Hello LWJGL: " + Version.getVersion());
@@ -62,6 +67,8 @@ public class Window {
 	
 		init();
 		loop();
+		
+		gfx.getShader().delete();
 		
 		glfwFreeCallbacks(glfwWindow);
 		glfwDestroyWindow(glfwWindow);
@@ -71,7 +78,7 @@ public class Window {
 	}
 	
 	/**
-	 * The init method will get GLFW ready to use for the user (it helps a lot)
+	 * The init method will get GLFW ready to use for the user (it helps a lot).
 	 */
 	
 	public void init() {
@@ -101,31 +108,35 @@ public class Window {
 		glfwShowWindow(glfwWindow);
 		
 		GL.createCapabilities();
+		
+		gfx.init();
 	}
 	
 	/**
-	 * The loop method will be in charge of updating and rendering to the screen
+	 * The loop method will be in charge of updating and rendering to the screen.
 	 */
 
 	public void loop() {
-		double lastTime = glfwGetTime();
-		int nFrames = 0;
+		float beginTime = (float)glfwGetTime();
+        float endTime;
+        float dt = -1.0f;
 		
 		while ( !glfwWindowShouldClose(glfwWindow) ) {
-			double currTime = glfwGetTime();
-			nFrames++;
-			if (currTime - lastTime >= 1.0) {
-				System.out.println("FPS: " + 1 / (1.0 / (double)nFrames));
-				nFrames = 0;
-				lastTime += 1.0;
-			}
-
 			glfwPollEvents();
 			
 			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
-			glfwSwapBuffers(glfwWindow); 
+			if (dt >= 0) {
+                System.out.println("FPS: " + 1 / dt);
+                gfx.update();
+            }
+			
+			glfwSwapBuffers(glfwWindow);
+			
+			endTime = (float)glfwGetTime();
+            dt = endTime - beginTime;
+            beginTime = endTime;
 		}
 	}
 }
