@@ -64,7 +64,6 @@ public class Window {
 	public void run() {
 		System.out.println("Hello LWJGL: " + Version.getVersion());
 		System.out.println("Hello ImGui: " + ImGui.getVersion());
-	
 		init();
 		loop();
 		
