@@ -17,21 +17,25 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 
 public class Mesh {
 	private float[] vertices = {
-		-0.5f, 0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,		0, 1,
-		-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		0, 0,
-		0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,		1, 0,
-		0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f, 1.0f,		1, 1
+		-0.5f, -0.5f,  0.5f,     0.83f, 0.70f, 0.44f, 1.0f,		0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,     0.83f, 0.70f, 0.44f, 1.0f,		5.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,     0.83f, 0.70f, 0.44f, 1.0f,		0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,     0.83f, 0.70f, 0.44f, 1.0f,		5.0f, 0.0f,
+		 0.0f,  0.5f,  0.0f,     0.92f, 0.86f, 0.76f, 1.0f,		2.5f, 5.0f
 	}; // Vertices array
 		
 	private int[] indices = {
-		1, 0, 2,
-		2, 0, 3
+		0, 1, 2,
+		0, 2, 3,
+		0, 1, 4,
+		1, 2, 4,
+		2, 3, 4,
+		3, 0, 4
 	}; // Indices array
 	
 	private VAO vaoID;
 	private VBO vboID;
-	private EBO eboID;
-	private UtilFunctions utilFunc = new UtilFunctions(); // Set up some useful variables.
+	private EBO eboID; // Set up some useful variables.
 	
 	private int posSize = 3;
 	private int colorSize = 4;
@@ -46,13 +50,13 @@ public class Mesh {
 	public Mesh() {
 		vaoID = new VAO();
 		vaoID.bind();
-		FloatBuffer vertexBuffer = utilFunc.createFloatBuffer(vertices);
+		FloatBuffer vertexBuffer = UtilFunctions.createFloatBuffer(vertices);
 		
 		vboID = new VBO();
 		vboID.bind(vertexBuffer);
 		
 		eboID = new EBO();
-		IntBuffer indexBuffer = utilFunc.createIntBuffer(indices);
+		IntBuffer indexBuffer = UtilFunctions.createIntBuffer(indices);
 		eboID.bind(indexBuffer);
 		
 		vaoID.setAttribPointer(0, posSize, GL_FLOAT, false, vertexSizeBytes, 0);

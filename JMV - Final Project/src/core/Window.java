@@ -21,7 +21,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  */
 
 public class Window {
-	private long glfwWindow;
+	private static long glfwWindow;
 	private Graphics gfx;
 	
 	private int width;
@@ -98,7 +98,7 @@ public class Window {
 
 		glfwSetCursorPosCallback(glfwWindow, Mouse::mousePosCallback);
         glfwSetMouseButtonCallback(glfwWindow, Mouse::mouseButtonCallback);
-        glfwSetScrollCallback(glfwWindow, Mouse::mouseScrollCallback);
+        glfwSetCursorEnterCallback(glfwWindow, Mouse::mouseCursorEnterCallback);
         glfwSetKeyCallback(glfwWindow, Keyboard::keyCallback);
 		
 		glfwMakeContextCurrent(glfwWindow);
@@ -109,6 +109,7 @@ public class Window {
 		GL.createCapabilities();
 		
 		gfx.init();
+		new Mouse();
 	}
 	
 	/**
@@ -119,9 +120,14 @@ public class Window {
 		float beginTime = (float)glfwGetTime();
         float endTime;
         float dt = -1.0f;
+        
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		while ( !glfwWindowShouldClose(glfwWindow) ) {
 			glfwPollEvents();
+			Mouse.input();
 			
 			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -137,5 +143,9 @@ public class Window {
             dt = endTime - beginTime;
             beginTime = endTime;
 		}
+	}
+	
+	public static long getWindow() {
+		return glfwWindow;
 	}
 }

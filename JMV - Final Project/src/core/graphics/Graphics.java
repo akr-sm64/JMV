@@ -11,6 +11,7 @@ import core.graphics.glObjects.Shader;
 public class Graphics {
 	private Shader shader;
 	private Mesh mesh;
+	private Camera camera;
 	private Texture texture;
 	
 	/**
@@ -22,23 +23,30 @@ public class Graphics {
 		shader = new Shader();
 		shader.create();
 		mesh = new Mesh();
-		texture = new Texture("./resources/textures/pop_cat.png");
+		camera = new Camera();
+		texture = new Texture("./resources/textures/brick.png");
 	}
 	
 	/**
 	 * The update function will be calling the shader program.<br>
 	 * It will enable the vertex attribute array for both vertices and colors + textures.<br>
 	 * Then, the draw function is called for rendering everything to the screen.<br>
+	 * It also sends the projection and view matrices to the vertex shader to get the camera working. <br>
 	 * It will finally free all the resources called previously for resource saving and memory economy.
 	 */
 	
 	public void update() {
 		shader.use();
 		shader.uploadTexture("TEX_SAMPLER", 0);
+
+		shader.uploadMat4f("view", camera.getView());
+		shader.uploadMat4f("proj", camera.getProj());
+
 		texture.setActive();
 		texture.bind();
 		
 		mesh.update();
+		camera.input();
 		shader.stop();
 	}
 	

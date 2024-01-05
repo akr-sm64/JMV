@@ -2,16 +2,12 @@ package core.graphics.glObjects;
 
 import util.UtilFunctions;
 
-import static org.lwjgl.opengl.GL20.*;
-
 import java.nio.FloatBuffer;
 
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
 import org.lwjgl.BufferUtils;
+
+import static org.lwjgl.opengl.GL20.*;
 
 /**
  * The Shader class will manage the shader methods for the program. <br>
@@ -22,7 +18,6 @@ import org.lwjgl.BufferUtils;
 public class Shader {
 	private String vertexFile = "./resources/shaders/vertex-shader.glsl";
 	private String fragmentFile = "./resources/shaders/fragment-shader.glsl";
-	private UtilFunctions utilFuncs = new UtilFunctions();
 	
 	private int shaderProgram, vertexShader, fragmentShader; // Useful instance variables.
 
@@ -53,7 +48,7 @@ public class Shader {
 	
 	private int loadShader(int type, String file) {
 		int shader = glCreateShader(type);
-		glShaderSource(shader, utilFuncs.readFile(file));
+		glShaderSource(shader, UtilFunctions.readFile(file));
 		glCompileShader(shader);
 		
 		if (glGetShaderi(shader, GL_COMPILE_STATUS) == GL_FALSE) {
