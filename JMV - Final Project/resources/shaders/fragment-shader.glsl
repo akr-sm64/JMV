@@ -12,7 +12,7 @@ in vec2 fragTexCoords;
 // Variable being output to the graphics pipeline.
 out vec4 color;
 
-uniform sampler2D TEX_SAMPLER; // Uniform variable for texture
+uniform sampler2D TEX_SAMPLER; // Uniform variable for texture.
 
 void main() {
     color = texture(TEX_SAMPLER, fragTexCoords); // check https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)

@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Scanner;
 
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 /**
@@ -21,7 +22,7 @@ public class UtilFunctions {
 	 * @return IntBuffer  contains an index buffer properly arranged for OpenGL to understand it.
 	 */
 	
-	public IntBuffer createIntBuffer(int[] indices) {
+	public static IntBuffer createIntBuffer(int[] indices) {
 		IntBuffer indexBuffer = BufferUtils.createIntBuffer(indices.length);
 		indexBuffer.put(indices).flip();
 		return indexBuffer;
@@ -33,12 +34,24 @@ public class UtilFunctions {
 	 * @return vertexBuffer  contains the vertices arranged in a way OpenGL understands.
 	 */
 	
-	public FloatBuffer createFloatBuffer(float[] vertices) {
+	public static FloatBuffer createFloatBuffer(float[] vertices) {
 		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length);
 		vertexBuffer.put(vertices).flip();
 		return vertexBuffer;
 	}
 	
+	/**
+	 * This method will convert a Matrix4f into a FloatBuffer.
+	 * @param vertices  an array which stores the vertices.
+	 * @return vertexBuffer  contains the vertices arranged in a way OpenGL understands.
+	 */
+	
+	public static FloatBuffer createFloatBuffer(Matrix4f mat4) {
+		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(16);
+        mat4.get(floatBuffer);
+        floatBuffer.flip();
+        return floatBuffer;
+	}
 
 	/**
 	 * This method reads the contents of the specified file.
@@ -46,7 +59,7 @@ public class UtilFunctions {
 	 * @return str  contains the shader source code from the glsl file.
 	 */
 	
-	public String readFile(String filepath) {
+	public static String readFile(String filepath) {
 		String str = "";
 		File file = new File(filepath);
 		Scanner sc = null;
