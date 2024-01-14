@@ -6,7 +6,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Scanner;
 
-import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 /**
@@ -39,24 +38,11 @@ public class UtilFunctions {
 		vertexBuffer.put(vertices).flip();
 		return vertexBuffer;
 	}
-	
-	/**
-	 * This method will convert a Matrix4f into a FloatBuffer.
-	 * @param vertices  an array which stores the vertices.
-	 * @return vertexBuffer  contains the vertices arranged in a way OpenGL understands.
-	 */
-	
-	public static FloatBuffer createFloatBuffer(Matrix4f mat4) {
-		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(16);
-        mat4.get(floatBuffer);
-        floatBuffer.flip();
-        return floatBuffer;
-	}
 
 	/**
 	 * This method reads the contents of the specified file.
-	 * @param filepath  stores the path to the shader file.
-	 * @return str  contains the shader source code from the glsl file.
+	 * @param filepath  stores the path to the file.
+	 * @return str  contains the source code from the file.
 	 */
 	
 	public static String readFile(String filepath) {

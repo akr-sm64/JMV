@@ -3,22 +3,22 @@
  * Author: akr_sm64 (@author is irrelevant in GLSL)
  */
 
-#version 330 core // Version
+#version 330 // Version
 
 // Layout variables are for setting up the vertex attributes.
-layout (location = 0) in vec3 pos;
-layout (location = 1) in vec4 aColor;
-layout (location = 2) in vec2 aTexCoords;
+layout (location=0) in vec3 pos;
+layout (location=1) in vec2 texCoord;
 
 // Variables which will be output to the fragment shader.
-out vec4 fragColor;
-out vec2 fragTexCoords;
+out vec2 fragTextCoord;
 
+// Uniform variables for projection, view and model matrices.
 uniform mat4 proj;
-uniform mat4 view; // Uniform variables for projection and view matrices.
+uniform mat4 view;
+uniform mat4 model;
 
-void main() {
-    gl_Position = proj * view * vec4(pos, 1.0); // check https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
-	fragColor = aColor;
-	fragTexCoords = aTexCoords;
+void main()
+{
+    gl_Position = proj * view * model * vec4(pos, 1.0); // check https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)
+    fragTextCoord = texCoord;
 }

@@ -43,10 +43,10 @@ public class EBO {
 	
 	/**
 	 * The draw method will draw the vertices using the GL_TRIANGLES primitive.
-	 * @param indices  contains all the indices corresponding to vertices (if it makes any sense).
+	 * @param indicesSize  stores the indices size.
 	 */
 	
-	public void draw(int[] indices) {
-		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
+	public void draw(int indicesSize) {
+		glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
 	}
 }
