@@ -1,6 +1,18 @@
 package core.graphics;
 
+import java.util.Collection;
+import java.util.List;
+
 import core.graphics.glObjects.Shader;
+import core.graphics.model.Entity;
+import core.graphics.model.Mesh;
+import core.graphics.model.Model;
+import core.graphics.model.ModelLoader;
+import core.graphics.model.texture.Material;
+import core.graphics.model.texture.Texture;
+import core.graphics.model.texture.TextureCache;
+
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 /**
  * The Graphics class will contain all the graphics related operations.<br>
@@ -10,9 +22,11 @@ import core.graphics.glObjects.Shader;
 
 public class Graphics {
 	private Shader shader;
-	private Mesh mesh;
+	private Scene scene;
+	private Model model;
+	private Entity entity;
 	private Camera camera;
-	private Texture texture;
+	private TextureCache textureCache;
 	
 	/**
 	 * This method will initialize the shaders and shader program. <br>
@@ -22,9 +36,13 @@ public class Graphics {
 	public void init() {
 		shader = new Shader();
 		shader.create();
-		mesh = new Mesh();
+		scene = new Scene();
+		textureCache = scene.getTextureCache();
+		model = ModelLoader.loadModel("3d-model", "./resources/models/Falco/PlyFalco.dae", textureCache);
+		entity = new Entity("model-ID", model.getId());
 		camera = new Camera();
-		texture = new Texture("./resources/textures/brick.png");
+		scene.addModel(model);
+		scene.addEntity(entity);
 	}
 	
 	/**
@@ -37,22 +55,43 @@ public class Graphics {
 	
 	public void update() {
 		shader.use();
-		shader.uploadTexture("TEX_SAMPLER", 0);
 
-		shader.uploadMat4f("view", camera.getView());
-		shader.uploadMat4f("proj", camera.getProj());
+        shader.uploadMat4f("proj", camera.getProj());
+        shader.uploadMat4f("view", camera.getView());
+        shader.uploadTexture("TEX_SAMPLER", 0);
+        
+        camera.input();
+        entity.update();
 
-		texture.setActive();
-		texture.bind();
-		
-		mesh.update();
-		camera.input();
-		shader.stop();
+        Collection<Model> models = scene.getModelMap().values();
+        TextureCache textureCache = scene.getTextureCache();
+        for (Model model : models) {
+            List<Entity> entities = model.getEntitiesList();
+
+            for (Material material : model.getMaterialList()) {
+                shader.uploadVec4f("material.diffuse", material.getDiffuseColor());
+                Texture texture = textureCache.getTexture(material.getTexturePath());
+                texture.setActive();
+                texture.bind();
+
+                for (Mesh mesh : material.getMeshList()) {
+                    mesh.getVaoId().bind();
+                    for (Entity entity : entities) {
+                        shader.uploadMat4f("model", entity.getModel());
+                        mesh.getEboId().draw(mesh.getNumVertices());
+                    }
+                }
+            }
+        }
+
+        glBindVertexArray(0);
+
+        shader.stop();
 	}
 	
 	/**
 	 * This method will make the shader visible to other classes.
-	 * @return shader the instance variable for the Shader class.
+	 * @return shader.
 	 */
 	
 	public Shader getShader() {

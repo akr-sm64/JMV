@@ -39,8 +39,8 @@ public class VAO {
 	 */
 	
 	public void setAttribPointer(int index, int size, int type, boolean normalized, int stride, int pointer) {
-		glVertexAttribPointer(index, size, type, normalized, stride, pointer);
 		enable(index);
+		glVertexAttribPointer(index, size, type, normalized, stride, pointer);
 	}
 	
 	/**

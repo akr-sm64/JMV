@@ -27,7 +27,7 @@ public class Camera {
      */
     
     public Camera() {
-        position = new Vector3f(0.0f, 0.0f, 2.0f);
+        position = new Vector3f(0.0f, 0.25f, 1.0f);
         rotation = new Vector3f(0.0f, 0.0f, 0.0f);
         updateMatrices();
     }
@@ -71,22 +71,22 @@ public class Camera {
     
     public void input() {
     	if (Keyboard.isKeyPressed(GLFW_KEY_W)) {
-            move(0.0f, 0.0f, -0.1f);
+            move(0.0f, 0.0f, -0.05f);
         }
         if (Keyboard.isKeyPressed(GLFW_KEY_S)) {
-            move(0.0f, 0.0f, 0.1f);
+            move(0.0f, 0.0f, 0.05f);
         }
         if (Keyboard.isKeyPressed(GLFW_KEY_A)) {
-            move(-0.1f, 0.0f, 0.0f);
+            move(-0.05f, 0.0f, 0.0f);
         }
         if (Keyboard.isKeyPressed(GLFW_KEY_D)) {
-            move(0.1f, 0.0f, 0.0f);
+            move(0.05f, 0.0f, 0.0f);
         }
         if (Keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
-            move(0.0f, 0.1f, 0.0f);
+            move(0.0f, 0.05f, 0.0f);
         }
         if (Keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL)) {
-            move(0.0f, -0.1f, 0.0f);
+            move(0.0f, -0.05f, 0.0f);
         }
         if (Mouse.isLeftButtonPress()) {
         	Vector2f rotVec = Mouse.getDisplVec();
