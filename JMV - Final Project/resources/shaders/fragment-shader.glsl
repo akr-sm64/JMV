@@ -3,7 +3,7 @@
  * Author: akr_sm64 (@author is irrelevant in GLSL)
  */
 
-#version 330
+#version 330 core
 
 // Variables coming from the vertex shader.
 in vec2 fragTextCoord;

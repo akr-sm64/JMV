@@ -22,27 +22,33 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class Graphics {
 	private Shader shader;
-	private Scene scene;
-	private Model model;
-	private Entity entity;
+	private static Scene scene;
+	private static Model model;
+	private static Entity entity;
 	private Camera camera;
-	private TextureCache textureCache;
+	private static TextureCache textureCache;
+	private ImGuiLayer layer;
+	
+	private static String modelPath = "./resources/models/Pyramid/pyramid.obj";
+	private static String modelId = "3d-model";
 	
 	/**
 	 * This method will initialize the shaders and shader program. <br>
 	 * It will then take care of the VAO, VBO and EBO and gets everything ready.
 	 */
 	
-	public void init() {
+	public void init(long window) {
 		shader = new Shader();
 		shader.create();
 		scene = new Scene();
-		textureCache = scene.getTextureCache();
-		model = ModelLoader.loadModel("3d-model", "./resources/models/Falco/PlyFalco.dae", textureCache);
-		entity = new Entity("model-ID", model.getId());
+		layer = new ImGuiLayer();
+		layer.init(window);
 		camera = new Camera();
-		scene.addModel(model);
-		scene.addEntity(entity);
+		textureCache = scene.getTextureCache();
+		model = ModelLoader.loadModel(modelId, modelPath, textureCache);
+		entity = new Entity("model-ID", model.getId());
+    	scene.addModel(model);
+    	scene.addEntity(entity);
 	}
 	
 	/**
@@ -62,6 +68,7 @@ public class Graphics {
         
         camera.input();
         entity.update();
+        layer.update();
 
         Collection<Model> models = scene.getModelMap().values();
         TextureCache textureCache = scene.getTextureCache();
@@ -89,6 +96,10 @@ public class Graphics {
         shader.stop();
 	}
 	
+	public void destroy() {
+		layer.destroy();
+	}
+	
 	/**
 	 * This method will make the shader visible to other classes.
 	 * @return shader.
@@ -96,5 +107,14 @@ public class Graphics {
 	
 	public Shader getShader() {
 		return shader;
+	}
+	
+	public static void changeModel(String modelPath) {
+		scene.removeModel(model);
+		model = ModelLoader.loadModel(modelId, modelPath, textureCache);
+		scene.addModel(model);
+		entity.setPosition(0, 0, 0);
+		entity.setRotation(0, 0, 0);
+		scene.addEntity(entity);
 	}
 }

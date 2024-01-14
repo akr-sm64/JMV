@@ -5,7 +5,7 @@ import org.lwjgl.opengl.*;
 
 import org.lwjgl.Version;
 
-import core.graphics.Graphics;
+import core.graphics.*;
 import core.input.*;
 
 import imgui.ImGui;
@@ -53,6 +53,7 @@ public class Window {
 		this.width = width;
 		this.height = height;
 		this.title = title;
+		this.gfx = new Graphics();
 	}
 	
 	/**
@@ -64,10 +65,12 @@ public class Window {
 	public void run() {
 		System.out.println("Hello LWJGL: " + Version.getVersion());
 		System.out.println("Hello ImGui: " + ImGui.getVersion());
+		
 		init();
 		loop();
 		
 		gfx.getShader().delete();
+		gfx.destroy();
 		
 		glfwFreeCallbacks(glfwWindow);
 		glfwDestroyWindow(glfwWindow);
@@ -88,6 +91,7 @@ public class Window {
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Set up some GLFW flags
 
@@ -108,7 +112,7 @@ public class Window {
 		
 		GL.createCapabilities();
 		
-		gfx.init();
+		gfx.init(glfwWindow);
 		new Mouse();
 	}
 	

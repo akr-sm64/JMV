@@ -27,7 +27,7 @@ public class Camera {
      */
     
     public Camera() {
-        position = new Vector3f(0.0f, 0.25f, 1.0f);
+        position = new Vector3f(0.0f, 0.25f, 2.5f);
         rotation = new Vector3f(0.0f, 0.0f, 0.0f);
         updateMatrices();
     }
