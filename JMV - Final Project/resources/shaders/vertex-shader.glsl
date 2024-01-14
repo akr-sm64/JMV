@@ -3,7 +3,7 @@
  * Author: akr_sm64 (@author is irrelevant in GLSL)
  */
 
-#version 330 // Version
+#version 330 core // Version
 
 // Layout variables are for setting up the vertex attributes.
 layout (location=0) in vec3 pos;

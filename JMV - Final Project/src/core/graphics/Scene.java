@@ -37,6 +37,20 @@ public class Scene {
         }
         model.getEntitiesList().add(entity);
     }
+    
+    /**
+     * This method will remove an entity from the scene.
+     * @param entity  the specific entity to remove.
+     */
+    
+    public void removeEntity(Entity entity) {
+        String modelId = entity.getModelId();
+        Model model = modelMap.get(modelId);
+        if (model == null) {
+            throw new RuntimeException("Could not find model [" + modelId + "]");
+        }
+        model.getEntitiesList().remove(entity);
+    }
 
     /**
      * This method will add a model to the scene.

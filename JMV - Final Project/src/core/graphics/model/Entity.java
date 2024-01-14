@@ -37,10 +37,10 @@ public class Entity {
      */
     
     public void update() {
-    	if (Keyboard.isKeyPressed(GLFW_KEY_UP)) {
+    	if (Keyboard.isKeyPressed(GLFW_KEY_DOWN)) {
     		position.add(new Vector3f(0.0f, 0.0f, 0.05f));
     	}
-    	if (Keyboard.isKeyPressed(GLFW_KEY_DOWN)) {
+    	if (Keyboard.isKeyPressed(GLFW_KEY_UP)) {
     		position.add(new Vector3f(0.0f, 0.0f, -0.05f));
     	}
     	if (Keyboard.isKeyPressed(GLFW_KEY_LEFT)) {
@@ -112,6 +112,18 @@ public class Entity {
 		return rotation;
 	}
 	
+	public void setPosition(float x, float y, float z) {
+		this.position.x = x;
+		this.position.y = y;
+		this.position.z = z;
+	}
+
+	public void setRotation(float pitch, float yaw, float roll) {
+		this.rotation.x = pitch;
+		this.rotation.y = yaw;
+		this.rotation.z = roll;
+	}
+
 	/**
      * Getter for scale.
      * @return scale.
