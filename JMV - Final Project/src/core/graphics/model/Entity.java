@@ -53,7 +53,7 @@ public class Entity {
     		position.add(new Vector3f(0.0f, 0.05f, 0.0f));
     	}
     	if (Keyboard.isKeyPressed(GLFW_KEY_RIGHT_CONTROL)) {
-    		position.add(new Vector3f(0.0f, -0.05f, 0.05f));
+    		position.add(new Vector3f(0.0f, -0.05f, 0.0f));
     	}
     	
     	if (Keyboard.isKeyPressed(GLFW_KEY_KP_8)) {

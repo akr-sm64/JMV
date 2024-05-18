@@ -27,9 +27,8 @@ public class Camera {
      */
     
     public Camera() {
-        position = new Vector3f(0.0f, 0.25f, 2.5f);
+        position = new Vector3f(0.0f, 0.25f, 3.0f);
         rotation = new Vector3f(0.0f, 0.0f, 0.0f);
-        updateMatrices();
     }
     
     /**
@@ -40,29 +39,39 @@ public class Camera {
      */
 
     public void move(float dx, float dy, float dz) {
-        position.add(dx, dy, dz);
-        updateMatrices();
+        if (dz != 0) {
+        	position.x += Math.sin(Math.toRadians(rotation.y)) * -1.0f * dz;
+        	position.z += Math.cos(Math.toRadians(rotation.y)) * dz;
+        }
+        
+        if (dx != 0) {
+        	position.x += Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * dx;
+        	position.z += Math.cos(Math.toRadians(rotation.y - 90)) * dx;
+        }
+        
+        position.y += dy;
     }
     
-    /**
+    public void setPosition(float x, float y, float z) {
+		this.position.set(x, y, z);
+	}
+
+	public void setRotation(float pitch, float yaw, float roll) {
+		this.rotation.x = pitch;
+		this.rotation.y = yaw;
+		this.rotation.z = roll;
+	}
+
+	/**
      * The rotate method will rotate the camera using the mouse position.
      * @param pitch  the rotation angle about the x-axis (I believe).
      * @param yaw the rotation angle about the y-axis (I believe).
      */
     
-    public void rotate(float pitch, float yaw) {
+    public void rotate(float pitch, float yaw, float roll) {
     	this.rotation.x += pitch;
     	this.rotation.y += yaw;
-    	updateMatrices();
-    }
-
-    /**
-     * This method will set the view and projection matrices to their default values.
-     */
-    
-    private void updateMatrices() {
-        view = new Matrix4f().identity().rotateX(Math.toRadians(rotation.x)).rotateY(Math.toRadians(rotation.y)).rotateZ(Math.toRadians(rotation.z)).translate(-position.x, -position.y, -position.z);
-        proj = new Matrix4f().perspective(Math.toRadians(70.0f), (float) 800 / 600, 0.1f, 1000.0f);
+    	this.rotation.z += roll;
     }
     
     /**
@@ -90,25 +99,22 @@ public class Camera {
         }
         if (Mouse.isLeftButtonPress()) {
         	Vector2f rotVec = Mouse.getDisplVec();
-        	rotate(rotVec.x * 0.1f, rotVec.y * 0.1f);
+        	rotate(rotVec.x * 0.1f, rotVec.y * 0.1f, 0.0f);
         }
     }
-
-    /**
-     * Getter for the view matrix.
-     * @return view
-     */
     
-	public Matrix4f getView() {
-        return view;
+    public Matrix4f getView() {
+    	view = new Matrix4f().identity();
+    	view.rotate(Math.toRadians(rotation.x), new Vector3f(1.0f, 0.0f, 0.0f))
+	    	.rotate(Math.toRadians(rotation.y), new Vector3f(0.0f, 1.0f, 0.0f))
+	    	.rotate(Math.toRadians(rotation.z), new Vector3f(0.0f, 0.0f, 1.0f));
+    	view.translate(-position.x, -position.y, -position.z);
+    	return view;
     }
-
-	/**
-	 * Getter for the projection matrix.
-	 * @return proj
-	 */
-	
+    
     public Matrix4f getProj() {
-        return proj;
+    	proj = new Matrix4f().identity();
+    	proj.perspective(Math.toRadians(70.0f), (float) 800 / 600, 0.1f, 1000.0f);
+    	return proj;
     }
 }

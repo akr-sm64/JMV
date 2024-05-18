@@ -25,7 +25,7 @@ public class Graphics {
 	private static Scene scene;
 	private static Model model;
 	private static Entity entity;
-	private Camera camera;
+	private static Camera camera;
 	private static TextureCache textureCache;
 	private ImGuiLayer layer;
 	
@@ -59,7 +59,7 @@ public class Graphics {
 	 * It will finally free all the resources called previously for resource saving and memory economy.
 	 */
 	
-	public void update() {
+	public void update(float dt) {
 		shader.use();
 
         shader.uploadMat4f("proj", camera.getProj());
@@ -68,7 +68,7 @@ public class Graphics {
         
         camera.input();
         entity.update();
-        layer.update();
+        layer.update(dt);
 
         Collection<Model> models = scene.getModelMap().values();
         TextureCache textureCache = scene.getTextureCache();
@@ -96,6 +96,10 @@ public class Graphics {
         shader.stop();
 	}
 	
+	/**
+	 * Destroy will do exactly what you're expecting it to do: destroy the current ImGui context.
+	 */
+	
 	public void destroy() {
 		layer.destroy();
 	}
@@ -109,12 +113,19 @@ public class Graphics {
 		return shader;
 	}
 	
+	/**
+	 * This method will be used to change the model currently rendered.
+	 * @param modelPath  the path to the model.
+	 */
+	
 	public static void changeModel(String modelPath) {
 		scene.removeModel(model);
 		model = ModelLoader.loadModel(modelId, modelPath, textureCache);
 		scene.addModel(model);
 		entity.setPosition(0, 0, 0);
 		entity.setRotation(0, 0, 0);
+		camera.setPosition(0, 0.25f, 3.f);
+		camera.setRotation(0, 0, 0);
 		scene.addEntity(entity);
 	}
 }
