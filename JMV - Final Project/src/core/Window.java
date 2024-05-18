@@ -113,7 +113,6 @@ public class Window {
 		GL.createCapabilities();
 		
 		gfx.init(glfwWindow);
-		new Mouse();
 	}
 	
 	/**
@@ -133,12 +132,11 @@ public class Window {
 			glfwPollEvents();
 			Mouse.input();
 			
-			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			if (dt >= 0) {
-                System.out.println("FPS: " + 1 / dt);
-                gfx.update();
+                gfx.update(dt);
             }
 			
 			glfwSwapBuffers(glfwWindow);

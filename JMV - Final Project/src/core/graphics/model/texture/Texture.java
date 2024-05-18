@@ -53,8 +53,11 @@ public class Texture {
             } else if (channels.get(0) == 4) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0),
                         0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+            } else if (channels.get(0) == 1) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0),
+                        0, GL_RGBA, GL_UNSIGNED_BYTE, image);
             } else {
-                throw new RuntimeException("Error: (Texture) Unknown number of channesl '" + channels.get(0) + "'");
+                throw new RuntimeException("Error: (Texture) Unknown number of channels '" + channels.get(0) + "'");
             }
         } else {
             throw new RuntimeException("Error: (Texture) Could not load image '" + filepath + "'");

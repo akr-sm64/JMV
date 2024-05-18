@@ -11,22 +11,11 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 
 public class Mouse {
-	private static Vector2d previousPos, currentPos;
-	private static Vector2f displVec;
+	private static Vector2d previousPos = new Vector2d(-1, -1);
+	private static Vector2d currentPos = new Vector2d(0, 0);
+	private static Vector2f displVec = new Vector2f();
 	
 	private static boolean inWindow = false,  leftButtonPress = false, rightButtonPress = false; // Useful variables
-
-
-    /**
-     * This constructor will set all vectors to 0.<br>
-     * If it's not done, the mouse won't be registered properly.
-     */
-    
-    public Mouse() {
-        previousPos = new Vector2d(-1, -1);
-        currentPos = new Vector2d(0, 0);
-        displVec = new Vector2f();
-    }
     
     /**
      * This is the mouse position callback which will check for the mouse position.
